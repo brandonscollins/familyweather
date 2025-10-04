@@ -96,7 +96,8 @@ jQuery(document).ready(function($) {
         });
     }
 
-    // Initial load and manual refresh
+
+    // Initial load, manual refresh, and auto-refresh
     $('.sfw-wrapper').each(function() {
         var wrapper = $(this);
         var contentDiv = wrapper.find('.sfw-content');
@@ -106,11 +107,23 @@ jQuery(document).ready(function($) {
         console.log("sfw-weather.js: Needs initial refresh:", needsInitialRefresh);
 
         if (needsInitialRefresh) {
-             console.log('sfw-weather.js: Triggering initial AJAX refresh for widget.');
-             refreshWeather(wrapper.find('.sfw-refresh-button'));
+            console.log('sfw-weather.js: Triggering initial AJAX refresh for widget.');
+            refreshWeather(wrapper.find('.sfw-refresh-button'));
         } else {
-             console.log('sfw-weather.js: Widget content already rendered by PHP, no initial AJAX refresh needed.');
-             wrapper.find('.sfw-loading-overlay').hide(); // Ensure overlay is hidden if not refreshing
+            console.log('sfw-weather.js: Widget content already rendered by PHP, no initial AJAX refresh needed.');
+            wrapper.find('.sfw-loading-overlay').hide(); // Ensure overlay is hidden if not refreshing
+        }
+
+        // Auto-refresh logic
+        var autoRefreshInterval = parseInt(wrapper.data('auto-refresh-interval'), 10);
+        if (!isNaN(autoRefreshInterval) && autoRefreshInterval > 0) {
+            console.log('sfw-weather.js: Setting up auto-refresh every', autoRefreshInterval, 'minutes.');
+            setInterval(function() {
+                console.log('sfw-weather.js: Auto-refresh triggered.');
+                refreshWeather(wrapper.find('.sfw-refresh-button'));
+            }, autoRefreshInterval * 60 * 1000);
+        } else {
+            console.log('sfw-weather.js: Auto-refresh disabled or not set.');
         }
     });
 

@@ -5,6 +5,8 @@
  * Version: 1.0.0
  * Author: Strategicli
  * Text Domain: strategicli-family-weather
+ * GitHub Plugin URI: https://github.com/brandonscollins/familyweather
+ * GitHub Branch: main
  */
 
 // Exit if accessed directly.

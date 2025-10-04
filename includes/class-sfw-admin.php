@@ -98,6 +98,14 @@ class Admin {
         );
 
         // SECTION FOR DISPLAY OPTIONS
+        add_settings_field(
+            'auto_refresh_interval',
+            __( 'Auto-Refresh Interval (minutes)', 'strategicli-family-weather' ),
+            array( $this, 'auto_refresh_interval_callback' ),
+            'sfw-weather-settings',
+            'sfw_api_section'
+        );
+
         add_settings_section(
             'sfw_display_section',
             __( 'Display Options', 'strategicli-family-weather' ),
@@ -200,6 +208,14 @@ class Admin {
         <?php
     }
 
+            public function auto_refresh_interval_callback() {
+        $settings = get_option( 'sfw_weather_settings' );
+        $auto_refresh_interval = isset( $settings['auto_refresh_interval'] ) ? $settings['auto_refresh_interval'] : 30;
+        ?>
+        <input type="number" name="sfw_weather_settings[auto_refresh_interval]" value="<?php echo esc_attr( $auto_refresh_interval ); ?>" min="0" max="1440" class="small-text" />
+        <p class="description"><?php esc_html_e( 'How often the weather widget should auto-refresh, in minutes (0 = disabled, max 1440 = 24 hours).', 'strategicli-family-weather' ); ?></p>
+        <?php
+    }
     public function location_callback() {
         $settings = get_option( 'sfw_weather_settings' );
         $location = isset( $settings['location'] ) ? $settings['location'] : 'Waupun, WI';
@@ -363,6 +379,13 @@ class Admin {
         $sanitized_input['hide_wind_speed'] = isset( $input['hide_wind_speed'] ) ? 1 : 0;
         $sanitized_input['hide_forecast_description'] = isset( $input['hide_forecast_description'] ) ? 1 : 0;
 
+            // SANITIZE AUTO-REFRESH INTERVAL
+            if ( isset( $input['auto_refresh_interval'] ) ) {
+                $interval = absint( $input['auto_refresh_interval'] );
+                $sanitized_input['auto_refresh_interval'] = ( $interval >= 0 && $interval <= 1440 ) ? $interval : 30;
+            } else {
+                $sanitized_input['auto_refresh_interval'] = 30;
+            }
 
         return $sanitized_input;
     }

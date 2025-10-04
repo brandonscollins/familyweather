@@ -86,18 +86,24 @@ class Weather {
             $wrapper_class .= ' sfw-dark-mode';
         }
 
-        ob_start();
-        ?>
-        <div class="<?php echo esc_attr( $wrapper_class ); ?>" data-location="<?php echo esc_attr( $location ); ?>" data-units="<?php echo esc_attr( $units ); ?>" data-forecast-days="<?php echo esc_attr( $forecast_days ); ?>"
-             data-hide-location-name="<?php echo (int)$hide_location_name; ?>"
-             data-hide-current-time="<?php echo (int)$hide_current_time; ?>"
-             data-hide-temp-unit-letter="<?php echo (int)$hide_temp_unit_letter; ?>" data-hide-current-description="<?php echo (int)$hide_current_description; ?>"
-             data-hide-feels-like="<?php echo (int)$hide_feels_like; ?>"
-             data-hide-humidity="<?php echo (int)$hide_humidity; ?>"
-             data-hide-wind-speed="<?php echo (int)$hide_wind_speed; ?>"
-             data-hide-forecast-description="<?php echo (int)$hide_forecast_description; ?>"
-             data-dark-mode="<?php echo esc_attr( $atts['dark_mode'] ); ?>"
-        >
+       $auto_refresh_interval = isset( $settings['auto_refresh_interval'] ) ? absint( $settings['auto_refresh_interval'] ) : 30;
+       ob_start();
+       ?>
+       <div class="<?php echo esc_attr( $wrapper_class ); ?>"
+           data-location="<?php echo esc_attr( $location ); ?>"
+           data-units="<?php echo esc_attr( $units ); ?>"
+           data-forecast-days="<?php echo esc_attr( $forecast_days ); ?>"
+           data-hide-location-name="<?php echo (int)$hide_location_name; ?>"
+           data-hide-current-time="<?php echo (int)$hide_current_time; ?>"
+           data-hide-temp-unit-letter="<?php echo (int)$hide_temp_unit_letter; ?>"
+           data-hide-current-description="<?php echo (int)$hide_current_description; ?>"
+           data-hide-feels-like="<?php echo (int)$hide_feels_like; ?>"
+           data-hide-humidity="<?php echo (int)$hide_humidity; ?>"
+           data-hide-wind-speed="<?php echo (int)$hide_wind_speed; ?>"
+           data-hide-forecast-description="<?php echo (int)$hide_forecast_description; ?>"
+           data-dark-mode="<?php echo esc_attr( $atts['dark_mode'] ); ?>"
+           data-auto-refresh-interval="<?php echo esc_attr( $auto_refresh_interval ); ?>"
+       >
             <div class="sfw-loading-overlay"><div class="sfw-spinner"></div></div>
             <div class="sfw-content">
                 <button class="sfw-refresh-button" title="<?php esc_attr_e( 'Refresh Weather', 'strategicli-family-weather' ); ?>"><span class="dashicons dashicons-update"></span></button>
